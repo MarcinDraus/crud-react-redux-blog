@@ -1,5 +1,6 @@
+
 const initialState = {
-    lists: [
+    posts: [
         {
           id: "1",
           title: 'Things to do...',
