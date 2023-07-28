@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col,  } from 'react-bootstrap';
 import { getAllPosts } from '../../Redux/postsRedux';
 
 const AllPosts = () => {

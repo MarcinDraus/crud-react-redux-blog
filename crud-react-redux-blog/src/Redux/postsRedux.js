@@ -8,9 +8,18 @@ export const getAllPosts = (state) => state.posts;
 const createActionName = actionName => `app/posts/${actionName}`;
 
 // action creators
+const DELETE_POST = 'app/posts/DELETE_POST';
+
+export const deletePost = (id) => ({
+  type: DELETE_POST,
+  payload: id,
+});
 //export const addPosts = (payload) => ({ type: 'ADD_POSTS', payload });
 const postsReducer = (statePart = [], action) => {
   switch (action.type) {
+    case DELETE_POST:
+      return statePart.filter((post) => post.id !== action.payload);
+    
     // case addPosts:
     //     return[...statePart, { ...action.payload, id: shortid() }];
     default:
