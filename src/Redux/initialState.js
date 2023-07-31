@@ -2,7 +2,7 @@
 const initialState = {
     posts: [
         {
-         id: '1',
+        id: '1',
         title: 'Article title',
         shortDescription: 'Short description of the article...',
         content: 'Main content of the article',

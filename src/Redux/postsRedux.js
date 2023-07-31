@@ -1,39 +1,44 @@
+
 import shortid from 'shortid';
 
-
-//selectors
+// selectors
 export const getPostById = (state, id) => state.posts.find((post) => post.id === id);
 export const getAllPosts = (state) => state.posts;
+
 // actions
-// eslint-disable-next-line no-unused-vars
 const createActionName = actionName => `app/posts/${actionName}`;
 
 // action creators
 const DELETE_POST = createActionName('DELETE_POST');
 const ADD_POST = createActionName('ADD_POST');
-//const DELETE_POST = 'app/posts/DELETE_POST';
-//const ADD_POST = 'app/posts/ADD_POST'; 
+const EDIT_POST = createActionName('EDIT_POST');
 
 export const deletePost = (id) => ({
   type: DELETE_POST,
   payload: id,
 });
 
-export const addPost = (postData) => ({
-    type: ADD_POST,
-    payload: postData,
-  });
-  
-//export const addPosts = (payload) => ({ type: 'ADD_POSTS', payload });
+export const addPost = (payload) => ({
+  type: ADD_POST,
+  payload
+});
+
+export const editPost = (payload) => ({
+  type: EDIT_POST,
+  payload
+});
+
 const postsReducer = (statePart = [], action) => {
   switch (action.type) {
     case DELETE_POST:
       return statePart.filter((post) => post.id !== action.payload);
     case ADD_POST:
-          return [...statePart, { ...action.payload, id: shortid.generate() }];
+      return  [...statePart, { ...action.payload, id: shortid() }];
+    case EDIT_POST:
+      return statePart.map(post => (post.id === action.payload.id ? { ...post, ...action.payload } : post));
     default:
       return statePart;
-  };
+  }
 };
 
 export default postsReducer;
