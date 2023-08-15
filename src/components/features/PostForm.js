@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const PostForm = ({ post, action, actionText }) => {
   const [formData, setFormData] = useState({
@@ -21,7 +23,9 @@ const PostForm = ({ post, action, actionText }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
   
-  
+  const handleContentChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, content: value }));
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -52,17 +56,21 @@ const PostForm = ({ post, action, actionText }) => {
           value={formData.shortDescription}
           onChange={handleChange}
         />
+        
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Main Content</Form.Label>
-        <Form.Control
+        
+        {/* <Form.Control
           as="textarea"
           rows={5}
           name="content"
           value={formData.content}
           onChange={handleChange}
-        />
-      </Form.Group>
+        /> */}
+         <ReactQuill theme="snow" value={formData.content} onChange={handleContentChange}  />
+
+       </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
       </Button>
