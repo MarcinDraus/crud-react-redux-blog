@@ -47,7 +47,8 @@ const Post = () => {
           </div>
         </div>
         <p>{post.publishedDate}</p>
-        <p>{post.content}</p>
+        {/* <p>{post.content}</p> */}
+        <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
       </Col>
 
       {/* Modal do usunięcia postu */}
