@@ -5,10 +5,12 @@ import { useParams, Navigate } from 'react-router-dom';
 import { getPostById, deletePost } from '../../../Redux/postsRedux.js';
 import { Button, Col, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import dateToStr from '../../../utils/dateToStr.js';
 
 const Post = () => {
   const { id } = useParams();
   const post = useSelector((state) => getPostById(state, id));
+  console.log("post.publishedDate:", post.publishedDate, "S",  post.bublishedDateS);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
@@ -21,8 +23,7 @@ const Post = () => {
   };
 
   const handleDeletePost = () => {
-    // Wywołanie akcji "DELETE_POST" za pomocą dispatch
-    dispatch(deletePost(id));
+        dispatch(deletePost(id));
 
     // Ukrycie modala po usunięciu postu
     handleHideModal();
@@ -30,7 +31,7 @@ const Post = () => {
 
   if (!post) {
     return <Navigate to="/" />;
-  }
+  } 
 
   return (
     <div>
@@ -46,10 +47,10 @@ const Post = () => {
             </Button>{' '}
           </div>
         </div>
-        <p>{post.publishedDate}</p>
-        {/* <p>{post.content}</p> */}
-        <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
-      </Col>
+        <p>{post.publishedDateS}</p>
+        <p>{dateToStr(post.publishedDate)}</p>
+        {/* <p dangerouslySetInnerHTML={{ __html: post.content }}></p> */}
+        </Col>
 
       {/* Modal do usunięcia postu */}
       <Modal show={showModal} onHide={handleHideModal} centered>

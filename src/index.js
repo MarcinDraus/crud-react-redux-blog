@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //ReactDOM.render(
-  createRoot(document.getElementById('root')).render(
+ createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
@@ -18,7 +18,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
     </BrowserRouter>
   </React.StrictMode>,
  );
-  // document.getElementById('root'));
+  //document.getElementById('root'));
 
 
 

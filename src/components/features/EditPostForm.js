@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPostById, editPost } from '../../Redux/postsRedux.js';
 import PostForm from './PostForm';
-//import DateToStr from '../../utils/dateToStr.js';
+//import dateToStr from '../../utils/dateToStr.js';
 
 const EditPostForm = () => {
   const { id } = useParams();
@@ -13,12 +13,30 @@ const EditPostForm = () => {
   const post = useSelector((state) => getPostById(state, id));
 
   const handleSubmit = (editedPost) => {
+    
     dispatch(editPost({ ...post, ...editedPost, id }));
     navigate('/');
   };
+   
+  return (
+    <PostForm
+      post={post}
+      action={handleSubmit}
+      publishedDate={new Date(post.publishedDate)}
+      publishedDateS={post.setpoblishedDateS}
+    //title={post.title}
+    //author={post.author}
+    // shortDestription={post.piblishedDate}
+    //publishedDate={post.publishedDate}
+    //piblishedDate={dateToStr(post.publishedDate)}
+    //publishedDateS={post.poblishedDateS}
+      actionText="Save post"
 
-  return <PostForm post={post} action={handleSubmit} actionText="Save post" />;
+    />
+    
+  );
 };
+
 
 export default EditPostForm;
 
