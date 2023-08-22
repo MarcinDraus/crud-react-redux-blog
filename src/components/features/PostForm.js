@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
@@ -6,8 +7,16 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dateToStr from '../../utils/dateToStr';
+import { useForm } from "react-hook-form";
+
 
 const PostForm = ({ post, action, actionText }) => {
+  
+  const {
+    register,
+    handleSubmit: validate,
+    formState: { errors }
+  } = useForm();
   const [formData, setFormData] = useState({
     title: post?.title || '',
     author: post?.author || '',
@@ -17,32 +26,51 @@ const PostForm = ({ post, action, actionText }) => {
     content: post?.content || '',
   });
   const [publishedDateS, setPublishedDateS] = useState(post?.publishedDateS || '');
-
   const [publishedDate, setPublishedDate] = useState(new Date() || '');
+  const [title, setTitle] = useState(post?.title || '');
+  const[author, setAuthor]= useState(post?.author || '');
+  const [shortDescription, setShortDescription] = useState(post?.shortDescription || '');
+  const [content, setContent] = useState(post?.content || '');
 
-   const handleSubmit = (e) => {
-    e.preventDefault();
-    action({ ...formData, publishedDateS: publishedDateS, publishedDate: dateToStr(publishedDate) });
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  
-  const handleContentChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, content: value }));
+  const handleSubmit = (e) => {
+    action({
+    
+      title: title,
+      author: author, 
+      shortDescription: shortDescription,
+      publishedDateS: publishedDateS, 
+      publishedDate: dateToStr(publishedDate),
+      content: content,
+      });
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={validate(handleSubmit)}>
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>
-        <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+        <Form.Control
+          type="text"
+          name="title"
+          placeholder="Enter title"
+          defaultValue={post?.title || ''}
+          {...register('title', {
+            required: 'Title is required',
+            minLength: {
+              value: 3,
+              message: 'Title must be at least 3 characters long',
+            },
+          })}
+          onChange={e=>setTitle(e.target.value)}
+        />
+        {errors.title && (
+          <small className="d-block form-text text-danger mt-2">
+            {errors.title.message}
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Author</Form.Label>
-        <Form.Control type="text" name="author" value={formData.author} onChange={handleChange} />
+        <Form.Control type="text" name="author" value={post.author} placeholder="Enter author" onChange={e=>setAuthor(e.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Published</Form.Label>
@@ -63,22 +91,15 @@ const PostForm = ({ post, action, actionText }) => {
           as="textarea"
           rows={3}
           name="shortDescription"
-          value={formData.shortDescription}
-          onChange={handleChange}
+          value={shortDescription}
+          onChange={e=>setShortDescription(e.target.value)}
         />
         
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Main Content</Form.Label>
         
-        {/* <Form.Control
-          as="textarea"
-          rows={5}
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-        /> */}
-         <ReactQuill theme="snow" value={formData.content} onChange={handleContentChange}  />
+        <ReactQuill theme="snow" value={content} onChange={value => setContent(value)} placeholder="Leave a comment here"  />
 
        </Form.Group>
       <Button variant="primary" type="submit">
@@ -86,6 +107,6 @@ const PostForm = ({ post, action, actionText }) => {
       </Button>
     </Form>
   );
-};
+      };
 
 export default PostForm;

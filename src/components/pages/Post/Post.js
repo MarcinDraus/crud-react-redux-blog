@@ -49,7 +49,7 @@ const Post = () => {
         </div>
         <p>{post.publishedDateS}</p>
         <p>{dateToStr(post.publishedDate)}</p>
-        {/* <p dangerouslySetInnerHTML={{ __html: post.content }}></p> */}
+        <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
         </Col>
 
       {/* Modal do usunięcia postu */}
