@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
@@ -17,33 +16,32 @@ const PostForm = ({ post, action, actionText }) => {
     handleSubmit: validate,
     formState: { errors }
   } = useForm();
-  const [formData, setFormData] = useState({
-    title: post?.title || '',
-    author: post?.author || '',
-    publishedDate: post?.publishedDate || '', 
-    publishedDateS: post?.publishedDateS || '',
-    shortDescription: post?.shortDescription || '',
-    content: post?.content || '',
-  });
-  const [publishedDateS, setPublishedDateS] = useState(post?.publishedDateS || '');
+
+  // const [publishedDateS, setPublishedDateS] = useState(post?.publishedDateS || '');
   const [publishedDate, setPublishedDate] = useState(new Date() || '');
   const [title, setTitle] = useState(post?.title || '');
   const[author, setAuthor]= useState(post?.author || '');
   const [shortDescription, setShortDescription] = useState(post?.shortDescription || '');
   const [content, setContent] = useState(post?.content || '');
+  const [contentError, setContentError] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [dateError, setDateError] = useState(false);
 
   const handleSubmit = (e) => {
+      setContentError(!content)
+      setDateError(!publishedDate)
+      if(content && publishedDate) {
+          
     action({
-    
       title: title,
       author: author, 
       shortDescription: shortDescription,
-      publishedDateS: publishedDateS, 
+      // publishedDateS: publishedDateS, 
       publishedDate: dateToStr(publishedDate),
       content: content,
       });
+  }
   };
-
   return (
     <Form onSubmit={validate(handleSubmit)}>
       <Form.Group className="mb-3">
@@ -70,20 +68,31 @@ const PostForm = ({ post, action, actionText }) => {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Author</Form.Label>
-        <Form.Control type="text" name="author" value={post.author} placeholder="Enter author" onChange={e=>setAuthor(e.target.value)} />
+        <Form.Control type="text" name="author" value={post.author} placeholder="Enter author"
+                 {...register('author', {
+                  required: 'Author is required',
+                  minLength: {
+                    value: 3,
+                    message: 'Author must be at least 3 characters long',
+                  },
+                })}
+        onChange={e=>setAuthor(e.target.value)} /> 
+        {errors.author && (
+          <small className="d-block form-text text-danger mt-2">
+            {errors.author.message}
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Published</Form.Label>
-
-        <DatePicker selected={publishedDate}  onChange={(date)=> setPublishedDate(date)} />
-        
-      <Form.Control
+          <Form.Label>Published</Form.Label>
+               <DatePicker selected={publishedDate} onChange={(date) => setPublishedDate(date)} />
+         {/* <Form.Control
           type="text"
           name="publishedDateS"
           value={publishedDateS}
           onChange={(e) => setPublishedDateS(e.target.value)}
           placeholder="YYYY-MM-DD"
-        />
+        /> */}
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Short Description</Form.Label>
@@ -92,15 +101,26 @@ const PostForm = ({ post, action, actionText }) => {
           rows={3}
           name="shortDescription"
           value={shortDescription}
+          {...register('shortDescription', {
+            required: 'Title is required',
+            minLength: {
+              value: 20,
+              message: 'shortDescription must be at least 20 characters long',
+            },
+          })}
           onChange={e=>setShortDescription(e.target.value)}
         />
-        
+         {errors.shortDescription && (
+          <small className="d-block form-text text-danger mt-2">
+            {errors.shortDescription.message}
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Main Content</Form.Label>
         
         <ReactQuill theme="snow" value={content} onChange={value => setContent(value)} placeholder="Leave a comment here"  />
-
+        {contentError && <small className="d-block form-text text-danger mt-2">Content can't be empty</small>}
        </Form.Group>
       <Button variant="primary" type="submit">
         {actionText}
