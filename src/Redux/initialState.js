@@ -1,5 +1,4 @@
-//import parseDate from '../utils/parseDate';
-//import dateToStr from '../utils/dateToStr';
+
 const initialState = {
 
     posts: [
@@ -8,8 +7,7 @@ const initialState = {
         title: 'Article title',
         shortDescription: 'Short description of the article...',
         content: 'Main content of the article',
-        publishedDateS: '02-02-2022',
-        //publishedDate: parseDate('02-02-2022'),
+        categoryId: 'Sport',
         publishedDate: new Date('2022-02-02'),
         author: 'John Doe',
       },
@@ -18,8 +16,7 @@ const initialState = {
         title: 'Article title 2',
         shortDescription: 'Short description of the article 2...',
         content: 'Main content of the article 2',
-        publishedDateS: '15-03-2022',
-        //publishedDate: dateToStr('2022-03-15'),
+        categoryId: 'News',
         publishedDate: new Date('2023-03-15'),
         author: 'Jane Smith'
       },
@@ -28,12 +25,15 @@ const initialState = {
         title: 'Article title 3',
         shortDescription: 'Short description of the article 3...',
         content: 'Main content of the article 3',
-        publishedDateS: '10-05-2022',
-        //publishedDate: dateToStr('2022-05-10'),
+        categoryId: 'Movie',
         publishedDate: new Date('2024-05-10'),
         author: 'Emily Johnson'
       },
-      
+    ],
+    categories: [
+      { id: 1, name: 'Sport' },
+      { id: 2, name: 'News' },
+      { id: 3, name: 'Movie' },
     ],
 }
 export default initialState;

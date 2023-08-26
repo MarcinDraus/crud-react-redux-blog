@@ -47,7 +47,7 @@ const Post = () => {
             </Button>{' '}
           </div>
         </div>
-        <p>{post.publishedDateS}</p>
+        <p>{post.categoryId}</p>
         <p>{dateToStr(post.publishedDate)}</p>
         <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
         </Col>

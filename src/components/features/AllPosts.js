@@ -15,9 +15,9 @@ const AllPosts = () => {
         <Col key={post.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
           <div>
             <h3>{post.title}</h3>
-            <p><strong>Published: </strong> {post.publishedDateS}</p>
-            <p><strong>Published: </strong> {dateToStr(post.publishedDate)} </p>
             <p><strong>Author:</strong> {post.author}</p>
+            <p><strong>Published: </strong> {dateToStr(post.publishedDate)} </p>
+            <p><strong>Category: </strong> {post.categoryId}</p>        
             <p>{post.shortDescription}</p>
             <Link to={`/post/${post.id}`}>
               <Button variant="primary">Read more</Button>

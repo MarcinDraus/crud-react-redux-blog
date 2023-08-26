@@ -11,6 +11,8 @@ import EditPost from './components/pages/EditPost/EditPost';
 import Header from './components/views/Header/Header';
 import Footer from './components/views/Footer/Footer';
 import { Container } from 'react-bootstrap'
+import Categories from './components/pages/Categories/Categories.js';
+import CategoryPage from './components/pages/CategoryPage/CategoryPage';
 
 const App = () => {
     return (
@@ -19,6 +21,8 @@ const App = () => {
        <Header />
        <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/categories" element={<Categories />} /> 
+            <Route path="/categories/:categoryId" element={<CategoryPage />} />
             <Route path="/post/:id" element={<Post />} />
             <Route path="/post/add" element={<AddPost />} />
             <Route path="/post/edit/:id" element={<EditPost />} />

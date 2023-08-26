@@ -7,17 +7,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dateToStr from '../../utils/dateToStr';
 import { useForm } from "react-hook-form";
+import initialState from '../../Redux/initialState';
 
-
-const PostForm = ({ post, action, actionText }) => {
-  
+const PostForm = ({ post, action, actionText, }) => {
+ 
   const {
     register,
     handleSubmit: validate,
     formState: { errors }
   } = useForm();
 
-  // const [publishedDateS, setPublishedDateS] = useState(post?.publishedDateS || '');
+    
   const [publishedDate, setPublishedDate] = useState(new Date() || '');
   const [title, setTitle] = useState(post?.title || '');
   const[author, setAuthor]= useState(post?.author || '');
@@ -26,6 +26,7 @@ const PostForm = ({ post, action, actionText }) => {
   const [contentError, setContentError] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [dateError, setDateError] = useState(false);
+  const [category, setCategory] = useState(post?.category || '');
 
   const handleSubmit = (e) => {
       setContentError(!content)
@@ -36,7 +37,7 @@ const PostForm = ({ post, action, actionText }) => {
       title: title,
       author: author, 
       shortDescription: shortDescription,
-      // publishedDateS: publishedDateS, 
+      categoryId: category,
       publishedDate: dateToStr(publishedDate),
       content: content,
       });
@@ -86,13 +87,29 @@ const PostForm = ({ post, action, actionText }) => {
       <Form.Group className="mb-3">
           <Form.Label>Published</Form.Label>
                <DatePicker selected={publishedDate} onChange={(date) => setPublishedDate(date)} />
-         {/* <Form.Control
-          type="text"
-          name="publishedDateS"
-          value={publishedDateS}
-          onChange={(e) => setPublishedDateS(e.target.value)}
-          placeholder="YYYY-MM-DD"
-        /> */}
+      </Form.Group>
+      <Form.Group className="mb-3">
+      <Form.Label>Category</Form.Label>
+      <Form.Select	aria-label="Category"
+				       {...register('categoryId', {
+                    required: 'Category is required',
+                  })}
+                  onChange={e => setCategory(e.target.value)}
+                  value={category} 
+      				>
+           <option value="" disabled>Select a category</option>
+          {initialState.categories.map(category => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+         
+        </Form.Select>
+        {errors.category && (
+          <small className="d-block form-text text-danger mt-2">
+            {errors.category.message}
+          </small>
+        )}
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Short Description</Form.Label>
@@ -104,7 +121,7 @@ const PostForm = ({ post, action, actionText }) => {
           {...register('shortDescription', {
             required: 'Title is required',
             minLength: {
-              value: 20,
+              value: 10,
               message: 'shortDescription must be at least 20 characters long',
             },
           })}

@@ -12,6 +12,7 @@ const createActionName = actionName => `app/posts/${actionName}`;
 const DELETE_POST = createActionName('DELETE_POST');
 const ADD_POST = createActionName('ADD_POST');
 const EDIT_POST = createActionName('EDIT_POST');
+//const CATEGORY_SELECT = createActionName('CATEGORY_SELECT');
 
 export const deletePost = (id) => ({
   type: DELETE_POST,
@@ -28,6 +29,11 @@ export const editPost = (payload) => ({
   payload
 });
 
+// export const categorySelect = (id, name) => ({
+//   type:'CATEGORY_SELECT',
+//   payload: id, name,
+// });
+
 const postsReducer = (statePart = [], action) => {
   switch (action.type) {
     case DELETE_POST:
@@ -36,8 +42,12 @@ const postsReducer = (statePart = [], action) => {
       return  [...statePart, { ...action.payload, id: shortid() }];
     case EDIT_POST:
       return statePart.map(post => (post.id === action.payload.id ? { ...post, ...action.payload } : post));
+      // case CATEGORY_SELECT:
+      //   return [...statePart, {...action.payload, id: shortid()}];
     default:
       return statePart;
+      
+
   }
 };
 
